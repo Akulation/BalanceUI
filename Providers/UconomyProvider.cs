@@ -38,7 +38,7 @@ namespace BalanceUI.Providers
             if (BalanceUI.Instance.Configuration.Instance.UseUconomy)
             {
                 decimal bal = GetBalance(player.CSteamID.ToString());
-                EffectManager.sendUIEffectText(3174, player.Player.channel.owner.transportConnection, true, "Text", bal.ToString());
+                EffectManager.sendUIEffectText(3174, player.Player.channel.owner.transportConnection, true, "BalanceUI_Text", BalanceUI.Instance.Configuration.Instance.BalancePrefix + bal.ToString() + BalanceUI.Instance.Configuration.Instance.BalanceSuffix);
             }
         }
     }
