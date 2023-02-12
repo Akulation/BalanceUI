@@ -4,12 +4,13 @@ using fr34kyn01535.Uconomy;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using BalanceUI;
+using System.Threading.Tasks;
 
 namespace BalanceUI.Providers
 {
     public interface ICurrencyProvider : IDisposable
     {
-        decimal GetBalance(string id);
+        Task<decimal> GetBalance(string id);
         void Init();
     }
 
@@ -22,10 +23,11 @@ namespace BalanceUI.Providers
             Uconomy.Instance.OnBalanceUpdate += OnBalanceUpdate;
         }
 
-        public decimal GetBalance(string id)
+        public async Task<decimal> GetBalance(string id)
         {
-            var bal = Uconomy.Instance.Database.GetBalance(id);
-            return bal;
+            var bal = Task.Run(() => Uconomy.Instance.Database.GetBalance(id));
+            var result = await bal;
+            return result;
         }
 
         public void Dispose()
@@ -33,11 +35,11 @@ namespace BalanceUI.Providers
             Uconomy.Instance.OnBalanceUpdate -= OnBalanceUpdate;
         }
 
-        private void OnBalanceUpdate(UnturnedPlayer player, decimal amt)
+        private async void OnBalanceUpdate(UnturnedPlayer player, decimal amt)
         {
             if (BalanceUI.Instance.Configuration.Instance.UseUconomy)
             {
-                decimal bal = GetBalance(player.CSteamID.ToString());
+                decimal bal = await GetBalance(player.CSteamID.ToString());
                 EffectManager.sendUIEffectText(3174, player.Player.channel.owner.transportConnection, true, "BalanceUI_Text", BalanceUI.Instance.Configuration.Instance.BalancePrefix + bal.ToString() + BalanceUI.Instance.Configuration.Instance.BalanceSuffix);
             }
         }

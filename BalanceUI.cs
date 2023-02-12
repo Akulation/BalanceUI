@@ -172,7 +172,7 @@ namespace BalanceUI
             return guid;
         }
 
-        public void OnPlayerConnected(UnturnedPlayer player)
+        public async void OnPlayerConnected(UnturnedPlayer player)
         {
             EffectManager.sendUIEffect(Configuration.Instance.UIEffectID, 3174, true);
             switch (EnabledCurrency)
@@ -181,7 +181,7 @@ namespace BalanceUI
                     EffectManager.sendUIEffectText(3174, player.Player.channel.owner.transportConnection, true, "BalanceUI_Text", Configuration.Instance.BalancePrefix + player.Experience.ToString() + Configuration.Instance.BalanceSuffix);
                     break;
                 case "UCONOMY":
-                    decimal bal = CurrencyProvider.GetBalance(player.CSteamID.ToString());
+                    decimal bal = await CurrencyProvider.GetBalance(player.CSteamID.ToString());
                     EffectManager.sendUIEffectText(3174, player.Player.channel.owner.transportConnection, true, "BalanceUI_Text", Configuration.Instance.BalancePrefix + bal.ToString() + Configuration.Instance.BalanceSuffix);
                     break;
                 case "ITEMCURRENCY":
