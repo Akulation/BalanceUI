@@ -174,7 +174,7 @@ namespace BalanceUI
 
         public async void OnPlayerConnected(UnturnedPlayer player)
         {
-            EffectManager.sendUIEffect(Configuration.Instance.UIEffectID, 3174, true);
+            EffectManager.sendUIEffect(Configuration.Instance.UIEffectID, 3174, player.Player.channel.owner.transportConnection, true);
             switch (EnabledCurrency)
             {
                 case "EXP":
